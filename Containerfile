@@ -26,9 +26,7 @@ RUN apt install -y --no-install-recommends --no-install-suggests phpmyadmin \
   && cp /usr/share/phpmyadmin/config.sample.inc.php /var/www/html/phpmyadmin/config.inc.php \
   && sed -i "s/\$cfg\['blowfish_secret'\] = '';/\$cfg\['blowfish_secret'\] = '"$(php -r 'echo bin2hex(random_bytes(32));')"';/" /var/www/html/phpmyadmin/config.inc.php \
   && sed -i "s/\$cfg\['Servers'\]\[\$i\]\['auth_type'\] = 'cookie';/\$cfg\['Servers'\]\[\$i\]\['auth_type'\] = 'config';/" /var/www/html/phpmyadmin/config.inc.php \
-  && sed -i "s/\$cfg\['Servers'\]\[\$i\]\['host'\] = 'localhost';/\$cfg\['Servers'\]\[\$i\]\['host'\] = 'host.containers.internal';/" /var/www/html/phpmyadmin/config.inc.php \
-  && sed -i "s/\$cfg\['Servers'\]\[\$i\]\['user'\] = 'root';/\$cfg\['Servers'\]\[\$i\]\['user'\] = getenv('PMA_USER') ?: 'root';/g" /var/www/html/phpmyadmin/config.inc.php \
-  && sed -i "s/\$cfg\['Servers'\]\[\$i\]\['password'\] = '';/\$cfg\['Servers'\]\[\$i\]\['password'\] = getenv('PMA_PASSWORD') ?: 'secret';/g" /var/www/html/phpmyadmin/config.inc.php  
+  && sed -i "s/\$cfg\['Servers'\]\[\$i\]\['host'\] = 'localhost';/\$cfg\['Servers'\]\[\$i\]\['host'\] = 'host.containers.internal';\n\$cfg\['Servers'\]\[\$i\]\['user'\] = getenv('PMA_USER') ?: 'root';\n\$cfg\['Servers'\]\[\$i\]\['password'\] = getenv('PMA_PASSWORD') ?: 'secret';/" /var/www/html/phpmyadmin/config.inc.php
 
 WORKDIR /var/www/html
 
