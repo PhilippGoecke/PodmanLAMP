@@ -23,12 +23,12 @@ RUN apt install -y --no-install-recommends --no-install-suggests phpmyadmin \
   && ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin \
   && rm -rf "/var/lib/apt/lists/*" \
   && rm -rf /var/cache/apt/archives \
-  && cp /usr/share/phpmyadmin/config.sample.inc.php /etc/phpmyadmin/config.inc.php \
-  && sed -i "s/\$cfg\['blowfish_secret'\] = '';/\$cfg\['blowfish_secret'\] = '"$(php -r 'echo bin2hex(random_bytes(32));')"';/" /etc/phpmyadmin/config.inc.php \
-  && sed -i "s/\$cfg\['Servers'\]\[\$i\]\['auth_type'\] = 'cookie';/\$cfg\['Servers'\]\[\$i\]\['auth_type'\] = 'config';/" /etc/phpmyadmin/config.inc.php \
-  && sed -i "s/\$cfg\['Servers'\]\[\$i\]\['host'\] = 'localhost';/\$cfg\['Servers'\]\[\$i\]\['host'\] = 'host.containers.internal';/" /etc/phpmyadmin/config.inc.php \
-  && sed -i "s/\$cfg\['Servers'\]\[\$i\]\['user'\] = 'root';/\$cfg\['Servers'\]\[\$i\]\['user'\] = getenv('PMA_USER') ?: 'root';/g" /etc/phpmyadmin/config.inc.php \
-  && sed -i "s/\$cfg\['Servers'\]\[\$i\]\['password'\] = '';/\$cfg\['Servers'\]\[\$i\]\['password'\] = getenv('PMA_PASSWORD') ?: 'secret';/g" /etc/phpmyadmin/config.inc.php  
+  && cp /usr/share/phpmyadmin/config.sample.inc.php /var/www/html/phpmyadmin/config.inc.php \
+  && sed -i "s/\$cfg\['blowfish_secret'\] = '';/\$cfg\['blowfish_secret'\] = '"$(php -r 'echo bin2hex(random_bytes(32));')"';/" /var/www/html/phpmyadmin/config.inc.php \
+  && sed -i "s/\$cfg\['Servers'\]\[\$i\]\['auth_type'\] = 'cookie';/\$cfg\['Servers'\]\[\$i\]\['auth_type'\] = 'config';/" /var/www/html/phpmyadmin/config.inc.php \
+  && sed -i "s/\$cfg\['Servers'\]\[\$i\]\['host'\] = 'localhost';/\$cfg\['Servers'\]\[\$i\]\['host'\] = 'host.containers.internal';/" /var/www/html/phpmyadmin/config.inc.php \
+  && sed -i "s/\$cfg\['Servers'\]\[\$i\]\['user'\] = 'root';/\$cfg\['Servers'\]\[\$i\]\['user'\] = getenv('PMA_USER') ?: 'root';/g" /var/www/html/phpmyadmin/config.inc.php \
+  && sed -i "s/\$cfg\['Servers'\]\[\$i\]\['password'\] = '';/\$cfg\['Servers'\]\[\$i\]\['password'\] = getenv('PMA_PASSWORD') ?: 'secret';/g" /var/www/html/phpmyadmin/config.inc.php  
 
 WORKDIR /var/www/html
 
