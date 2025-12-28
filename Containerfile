@@ -34,7 +34,7 @@ RUN git clone --depth 1 https://github.com/phpenv/phpenv.git ~/.phpenv \
   && phpenv global 8.4.15
 ENV PATH="$HOME/.phpenv/shims:$PATH"
 
-# install dependencies
+# install phpmyadmin
 RUN apt install -y --no-install-recommends --no-install-suggests phpmyadmin \
   && a2enconf phpmyadmin \
   && ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin \
