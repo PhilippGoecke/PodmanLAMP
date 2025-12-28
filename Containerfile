@@ -10,7 +10,7 @@ RUN rm /bin/sh \
 RUN apt update && apt upgrade -y \
   && apt install -y --no-install-recommends --no-install-suggests apache2 \
   && apt install -y --no-install-recommends --no-install-suggests ca-certificates git curl \
-  && apt install -y --no-install-recommends --no-install-suggests bzip2 gcc build-essential zlib1g-dev libxml2-dev pkg-config libssl-dev libsqlite3-dev \
+  && apt install -y --no-install-recommends --no-install-suggests bzip2 build-essential zlib1g-dev libxml2-dev pkg-config libssl-dev libsqlite3-dev \
   && apt install -y --no-install-recommends --no-install-suggests libbz2-dev autoconf bison bash findutils libcurl4-gnutls-dev libicu-dev libjpeg-dev libmcrypt-dev libonig-dev libpng-dev libreadline-dev libtidy-dev libxslt1-dev libzip-dev \
   && rm -rf "/var/lib/apt/lists/*" \
   && rm -rf /var/cache/apt/archives
