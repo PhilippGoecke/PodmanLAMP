@@ -4,7 +4,8 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 #SHELL ["/bin/bash", "-c"]
 RUN rm /bin/sh \
-  && ln -s /bin/bash /bin/sh
+  && ln -s /bin/bash /bin/sh \
+  && usermod -s /bin/bash root
 
 # install dependencies
 RUN apt update && apt upgrade -y \
