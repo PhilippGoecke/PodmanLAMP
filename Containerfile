@@ -23,9 +23,9 @@ RUN apt install -y --no-install-recommends --no-install-suggests phpmyadmin \
   && ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin \
   && rm -rf "/var/lib/apt/lists/*" \
   && rm -rf /var/cache/apt/archives \
-  && sed -ri "s/^\s*\$dbuser\s*=.*/\$dbuser='root';/" /etc/phpmyadmin/config-db.php \
-  && sed -ri "s/^\s*\$dbpass\s*=.*/\$dbpass='secret';/" /etc/phpmyadmin/config-db.php \
-  && sed -ri "s/^\s*\$dbserver\s*=.*/\$dbserver='host.containers.internal';/" /etc/phpmyadmin/config-db.php
+  && sed -i "s/\$dbuser=/\$dbuser='root'; #/g" /etc/phpmyadmin/config-db.php \
+  && sed -i "s/\$dbpass=/\$dbpass='secret'; #/g" /etc/phpmyadmin/config-db.php \
+  && sed -i "s/\$dbserver=/\$dbserver='host.containers.internal'; #/g" /etc/phpmyadmin/config-db.php
 
 WORKDIR /var/www/html
 
