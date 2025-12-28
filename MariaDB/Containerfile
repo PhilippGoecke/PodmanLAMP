@@ -17,7 +17,7 @@ RUN apt update && apt upgrade -y \
 RUN mkdir /run/mysqld \
   && chown mysql:mysql /run/mysqld/
 
-#RUN echo "CREATE USER 'root'@'%' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD'; GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'; FLUSH PRIVILEGES;" | mysql --host=localhost --password=$MYSQL_ROOT_PASSWORD
+#RUN echo "CREATE USER 'root'@'%' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD'; GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'; FLUSH PRIVILEGES;" | mysql --host=localhost --user=root --password=$MYSQL_ROOT_PASSWORD
 
 EXPOSE 3306
 
