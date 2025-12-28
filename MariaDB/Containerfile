@@ -4,6 +4,9 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # set environment variables
 ENV MYSQL_ROOT_PASSWORD=secret
+ENV MYSQL_DATABASE=dbname
+ENV MYSQL_USER=username
+ENV MYSQL_PASSWORD=password
 
 # install dependencies
 RUN apt update && apt upgrade -y \
