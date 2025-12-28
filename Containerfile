@@ -19,6 +19,9 @@ RUN apt update && apt upgrade -y \
 # Allow apache to bind to privileged ports (80/443)
 RUN echo "net.ipv4.ip_unprivileged_port_start=80" >> /etc/sysctl.conf
 
+# set apache log level to debug
+RUN sed -ri 's/^\s*LogLevel\s+.*/LogLevel debug/' /etc/apache2/apache2.conf
+
 # add user and set home directory
 ARG USER=phpuser
 RUN useradd --create-home --shell /bin/bash $USER
