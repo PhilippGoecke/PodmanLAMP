@@ -52,6 +52,6 @@ RUN echo "<?php phpinfo(); ?>" > info.php \
 
 EXPOSE 80
 
-CMD apachectl -DFOREGROUND
+CMD ["/bin/bash", "-lc", "tail -F -n0 -q /var/log/apache2/*.log & exec apachectl -DFOREGROUND"]
 
 HEALTHCHECK CMD curl -f "http://localhost:80" || exit 1
