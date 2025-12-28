@@ -16,6 +16,6 @@ RUN mkdir /run/mysqld \
 
 EXPOSE 3306
 
-CMD ["mysqld", "--user=mysql", "--console"]
+CMD ["mysqld", "--user=mysql", "--console", "--bind-address=0.0.0.0"]
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=20s CMD mysqladmin ping -h localhost || exit 1
