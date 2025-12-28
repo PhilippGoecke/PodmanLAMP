@@ -21,13 +21,6 @@ RUN echo "net.ipv4.ip_unprivileged_port_start=80" >> /etc/sysctl.conf
 # set apache log level to debug
 RUN sed -ri 's/^\s*LogLevel\s+.*/LogLevel debug/' /etc/apache2/apache2.conf
 
-# add user and set home directory
-ARG USER=www-data
-RUN useradd --create-home --shell /bin/bash $USER
-ARG HOME="/home/$USER"
-WORKDIR $HOME
-USER $USER
-
 # install PHP using phpenv
 ENV PATH="$HOME/.phpenv/bin:$PATH"
 RUN git clone --depth 1 https://github.com/phpenv/phpenv.git ~/.phpenv \
@@ -41,16 +34,25 @@ RUN git clone --depth 1 https://github.com/phpenv/phpenv.git ~/.phpenv \
   && phpenv global 8.4.15
 ENV PATH="$HOME/.phpenv/shims:$PATH"
 
+# install dependencies
+RUN apt install -y --no-install-recommends --no-install-suggests phpmyadmin \
+  && a2enconf phpmyadmin \
+  && ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin \
+  && rm -rf "/var/lib/apt/lists/*" \
+  && rm -rf /var/cache/apt/archives
+
 WORKDIR /var/www/html
 
+# create a phpinfo file
 RUN echo "<?php phpinfo(); ?>" > info.php \
   && chown www-data:www-data info.php
 
-##COPY --chown=<user>:<group> <hostPath> <containerPath>
+# uncomment the following line to copy your application code
 #COPY --chown=www-data:www-data . app
 
 EXPOSE 80
 
+# start apache in foreground mode and tail the logs
 CMD ["/bin/bash", "-lc", "tail -F -n0 -q /var/log/apache2/*.log & exec apachectl -DFOREGROUND"]
 
 HEALTHCHECK CMD curl -f "http://localhost:80" || exit 1
