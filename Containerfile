@@ -8,10 +8,9 @@ RUN rm /bin/sh \
 
 # install dependencies
 RUN apt update && apt upgrade -y \
-  && apt install -y --no-install-recommends --no-install-suggests apache2 libapache2-mod-php \
-  #&& apt install -y --no-install-recommends --no-install-suggests php php-mysql libapache2-mod-php \
-  && apt install -y --no-install-recommends --no-install-suggests ca-certificates git \
-  && apt install -y --no-install-recommends --no-install-suggests curl bzip2 gcc build-essential zlib1g-dev libxml2-dev pkg-config libssl-dev libsqlite3-dev \
+  && apt install -y --no-install-recommends --no-install-suggests apache2 \
+  && apt install -y --no-install-recommends --no-install-suggests ca-certificates git curl \
+  && apt install -y --no-install-recommends --no-install-suggests bzip2 gcc build-essential zlib1g-dev libxml2-dev pkg-config libssl-dev libsqlite3-dev \
   && apt install -y --no-install-recommends --no-install-suggests libbz2-dev autoconf bison bash findutils libcurl4-gnutls-dev libicu-dev libjpeg-dev libmcrypt-dev libonig-dev libpng-dev libreadline-dev libtidy-dev libxslt1-dev libzip-dev \
   && rm -rf "/var/lib/apt/lists/*" \
   && rm -rf /var/cache/apt/archives
@@ -23,11 +22,11 @@ RUN echo "net.ipv4.ip_unprivileged_port_start=80" >> /etc/sysctl.conf
 RUN sed -ri 's/^\s*LogLevel\s+.*/LogLevel debug/' /etc/apache2/apache2.conf
 
 # add user and set home directory
-ARG USER=phpuser
+ARG USER=www-data
 RUN useradd --create-home --shell /bin/bash $USER
 ARG HOME="/home/$USER"
 WORKDIR $HOME
-#USER $USER
+USER $USER
 
 # install PHP using phpenv
 ENV PATH="$HOME/.phpenv/bin:$PATH"
