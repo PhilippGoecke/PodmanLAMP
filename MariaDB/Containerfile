@@ -1,0 +1,21 @@
+FROM debian:trixie-slim as install
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+# set environment variables
+ENV MYSQL_ROOT_PASSWORD=secret
+
+# install dependencies
+RUN apt update && apt upgrade -y \
+  && apt install -y --no-install-recommends --no-install-suggests mariadb-server \
+  && rm -rf "/var/lib/apt/lists/*" \
+  && rm -rf /var/cache/apt/archives
+
+RUN mkdir /run/mysqld \
+  && chown mysql:mysql /run/mysqld/
+
+EXPOSE 3306
+
+CMD ["mysqld", "--user=mysql", "--console"]
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=20s CMD mysqladmin ping -h localhost || exit 1
