@@ -20,7 +20,6 @@ RUN sed -ri 's/^\s*LogLevel\s+.*/LogLevel debug/' /etc/apache2/apache2.conf
 
 # install phpmyadmin
 RUN apt install -y --no-install-recommends --no-install-suggests phpmyadmin \
-  && a2enconf phpmyadmin \
   && ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin \
   && rm -rf "/var/lib/apt/lists/*" \
   && rm -rf /var/cache/apt/archives \
