@@ -3,10 +3,10 @@ FROM debian:trixie-slim as install
 ARG DEBIAN_FRONTEND=noninteractive
 
 # set environment variables
-ENV MYSQL_ROOT_PASSWORD=secret
-ENV MYSQL_DATABASE=dbname
-ENV MYSQL_USER=username
-ENV MYSQL_PASSWORD=password
+ENV MARIADB_ROOT_PASSWORD=secret
+ENV MARIADB_DATABASE=dbname
+ENV MARIADB_USER=username
+ENV MARIADB_PASSWORD=password
 
 # install dependencies
 RUN apt update && apt upgrade -y \
@@ -17,10 +17,10 @@ RUN apt update && apt upgrade -y \
 RUN mkdir /run/mysqld \
   && chown mysql:mysql /run/mysqld/
 
-#RUN echo "CREATE USER 'root'@'%' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD'; GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'; FLUSH PRIVILEGES;" | mysql --host=localhost --user=root --password=$MYSQL_ROOT_PASSWORD
-RUN mariadb-safe & \
+#RUN echo "CREATE USER 'root'@'%' IDENTIFIED BY '$MARIADB_ROOT_PASSWORD'; GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'; FLUSH PRIVILEGES;" | mysql --host=localhost --user=root --password=$MARIADB_ROOT_PASSWORD
+RUN mariadbd --user=mysql --datadir=/var/lib/mysql &  \
   sleep 5 && \
-  mariadb -u root -e "CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD'; GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%'; FLUSH PRIVILEGES;" && \
+  mariadb -u root -e "CREATE USER '$MARIADB_USER'@'%' IDENTIFIED BY '$MARIADB_PASSWORD'; GRANT ALL PRIVILEGES ON $MARIADB_DATABASE.* TO '$MARIADB_USER'@'%'; FLUSH PRIVILEGES;" && \
   mysqladmin shutdown
 
 EXPOSE 3306
