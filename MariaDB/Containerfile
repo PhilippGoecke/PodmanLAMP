@@ -18,9 +18,10 @@ RUN mkdir /run/mysqld \
   && chown mysql:mysql /run/mysqld/
 
 #RUN echo "CREATE USER 'root'@'%' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD'; GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'; FLUSH PRIVILEGES;" | mysql --host=localhost --user=root --password=$MYSQL_ROOT_PASSWORD
-RUN service mariadb start && \
-  mysql -u root -p"$MYSQL_ROOT_PASSWORD" -e "CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD'; GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%'; FLUSH PRIVILEGES;" && \
-  service mariadb stop
+RUN mysqld_safe & \
+  sleep 5 && \
+  mysql -u root -e "CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD'; GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%'; FLUSH PRIVILEGES;" && \
+  mysqladmin shutdown
 
 EXPOSE 3306
 
